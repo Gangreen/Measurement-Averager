@@ -23,17 +23,7 @@ jobs:
           from pathlib import Path
           p = Path("app/build.gradle.kts")
           s = p.read_text()
-          addition = """
-              compileOptions {
-                  sourceCompatibility = JavaVersion.VERSION_17
-                  targetCompatibility = JavaVersion.VERSION_17
-              }
-
-              kotlinOptions {
-                  jvmTarget = "17"
-              }
-          """
-          s = s.rsplit("\\n}", 1)[0] + "\\n" + addition + "\\n}\\n"
+          s = s.replace('    defaultConfig {', '    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_17\n        targetCompatibility = JavaVersion.VERSION_17\n    }\n    kotlinOptions {\n        jvmTarget = "17"\n    }\n\n    defaultConfig {')
           p.write_text(s)
           PY
       - name: Set up JDK 17
